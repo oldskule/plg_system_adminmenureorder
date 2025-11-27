@@ -21,7 +21,7 @@ class PlgSystemAdminMenuReorder extends CMSPlugin
 {
     protected $app;
 
-    public function onAfterRender()
+    public function onBeforeCompileHead()
 	{
 		if (!$this->app->isClient('administrator')) {
 			return;
@@ -42,9 +42,13 @@ class PlgSystemAdminMenuReorder extends CMSPlugin
 		$jsArray = json_encode($order);
 	
 		// The pure JavaScript code
-$script = <<<JS
+$scriptStart = <<<'JS'
 document.addEventListener("DOMContentLoaded", function () {
-    const order = {$jsArray};
+    const order = 
+JS;
+
+$scriptEnd = <<<'JS'
+;
     const menu = document.querySelector("#collapse3");
     if (!menu) return console.warn("AdminMenuReorder: collapse3 not found.");
 
@@ -75,6 +79,8 @@ document.addEventListener("DOMContentLoaded", function () {
     console.groupEnd();
 });
 JS;
+
+		$script = $scriptStart . $jsArray . $scriptEnd;
 
 		// Add the inline script via the Web Asset Manager
 		$this->app->getDocument()->getWebAssetManager()->addInlineScript($script);
