@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" group="system" method="upgrade" version="4.0">
+    <name>PLG_SYSTEM_ADMINMENUREORDER</name>
+    <creationDate>2025-11-27</creationDate>
+    <author>mamboSchools</author>
+    <authorEmail>info@mamboschools.com</authorEmail>
+    <authorUrl>https://www.mamboschools.com</authorUrl>
+    <copyright>(C) 2025 Your Name</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <version>1.0.5</version>
+    <description>PLG_SYSTEM_ADMINMENUREORDER_XML_DESCRIPTION</description>
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field
+                    name="menu_order"
+                    type="subform"
+                    label="PLG_SYSTEM_ADMINMENUREORDER_MENU_ORDER_LABEL"
+                    description="PLG_SYSTEM_ADMINMENUREORDER_MENU_ORDER_DESC"
+                    multiple="true"
+                    layout="joomla.form.field.subform.repeatable-table"
+                    default="[{&quot;title&quot;:&quot;Manage&quot;},{&quot;title&quot;:&quot;All Menu Items&quot;},{&quot;title&quot;:&quot;Main Menu&quot;},{&quot;title&quot;:&quot;Hidden Menu&quot;},{&quot;title&quot;:&quot;RCHS&quot;},{&quot;title&quot;:&quot;RCMS&quot;},{&quot;title&quot;:&quot;RCPS&quot;},{&quot;title&quot;:&quot;VAN&quot;}]"
+                    >
+                    <form>
+                        <field
+                            name="title"
+                            type="text"
+                            label="PLG_SYSTEM_ADMINMENUREORDER_MENU_ITEM_TITLE_LABEL"
+                            />
+                    </form>
+                </field>
+            </fieldset>
+        </fields>
+    </config>
+    <files>
+        <filename plugin="adminmenureorder">adminmenureorder.php</filename>
+        <folder>language</folder>
+    </files>
+    <languages folder="language">
+        <language tag="en-GB">en-GB/en-GB.plg_system_adminmenureorder.ini</language>
+        <language tag="en-GB">en-GB/en-GB.plg_system_adminmenureorder.sys.ini</language>
+    </languages>
+</extension>
