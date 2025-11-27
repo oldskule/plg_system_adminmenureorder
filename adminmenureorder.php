@@ -27,8 +27,6 @@ class PlgSystemAdminMenuReorder extends CMSPlugin
 			return;
 		}
 	
-		$body = $this->app->getBody();
-	
 		// Get the menu order from the plugin parameters
 		$menuOrderParam = $this->params->get('menu_order', '[]');
 		$menuOrderItems = is_string($menuOrderParam) ? json_decode($menuOrderParam) : $menuOrderParam;
@@ -43,44 +41,43 @@ class PlgSystemAdminMenuReorder extends CMSPlugin
 		// Encode for JavaScript
 		$jsArray = json_encode($order);
 	
-		// Output safe JavaScript with proper escaping
-		$script = '<script>
-	document.addEventListener("DOMContentLoaded", function () {
-		const order = ' . $jsArray . ';
-		const menu = document.querySelector("#collapse3");
-		if (!menu) return console.warn("AdminMenuReorder: collapse3 not found.");
-	
-		const items = Array.from(menu.querySelectorAll("li.item.item-level-2"));
-		const matched = [], unmatched = [];
-	
-		items.forEach(li => {
-			const labelEl = li.querySelector(".sidebar-item-title");
-			if (!labelEl) return;
-	
-			const title = labelEl.textContent.trim();
-			const index = order.indexOf(title);
-			if (index >= 0) {
-				matched[index] = li;
-			} else {
-				unmatched.push(li);
-			}
-		});
-	
-		const final = matched.filter(Boolean).concat(unmatched);
-		final.forEach(li => menu.appendChild(li));
-	
-		console.groupCollapsed("✅ AdminMenuReorder (JS-based)");
-		final.forEach((li, i) => {
-			const title = li.querySelector(".sidebar-item-title")?.textContent.trim();
-			console.log(`#${i + 1}: ${title}`);
-		});
-		console.groupEnd();
-	});
-	</script>';
-	
-		// Inject just before </body>
-		$body = str_ireplace('</body>', $script . '</body>', $body);
-		$this->app->setBody($body);
+		// The pure JavaScript code
+$script = <<<JS
+document.addEventListener("DOMContentLoaded", function () {
+    const order = {$jsArray};
+    const menu = document.querySelector("#collapse3");
+    if (!menu) return console.warn("AdminMenuReorder: collapse3 not found.");
+
+    const items = Array.from(menu.querySelectorAll("li.item.item-level-2"));
+    const matched = [], unmatched = [];
+
+    items.forEach(li => {
+        const labelEl = li.querySelector(".sidebar-item-title");
+        if (!labelEl) return;
+
+        const title = labelEl.textContent.trim();
+        const index = order.indexOf(title);
+        if (index >= 0) {
+            matched[index] = li;
+        } else {
+            unmatched.push(li);
+        }
+    });
+
+    const final = matched.filter(Boolean).concat(unmatched);
+    final.forEach(li => menu.appendChild(li));
+
+    console.groupCollapsed("✅ AdminMenuReorder (JS-based)");
+    final.forEach((li, i) => {
+        const title = li.querySelector(".sidebar-item-title")?.textContent.trim();
+        console.log(`#${i + 1}: ${title}`);
+    });
+    console.groupEnd();
+});
+JS;
+
+		// Add the inline script via the Web Asset Manager
+		$this->app->getDocument()->getWebAssetManager()->addInlineScript($script);
 	}
 
 }
