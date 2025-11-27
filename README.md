@@ -1,10 +1,10 @@
 # Admin Menu Reorder Plugin for Joomla
 
-A simple system plugin for Joomla that allows you to reorder the administrator menu items in the sidebar.
+A simple system plugin for Joomla that allows you to reorder the administrator whole menus in the sidebar.
 
 ## Features
 
-- Reorder the main administrator menu items under the "System" dashboard.
+- Reorder the main administrator whole menus under the "System" dashboard.
 - Simple drag-and-drop interface in the plugin settings to define the order.
 - Add or remove menu items from the ordering list.
 - Any menu items not in the defined order will be placed at the end of the menu.
